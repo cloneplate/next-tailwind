@@ -10,6 +10,19 @@ datasource db {
   url      = "file:../db.sqlite"
 }
 
-model Demo {
-  id    Int    @id @default(autoincrement())
+model Collection {
+  id    String @id @default(cuid())
+  title String
+  posts Post[]
+}
+
+model Post {
+  id           String     @id @default(cuid())
+  collectionId String?
+  collection   Collection? @relation(fields: [collectionId], references: [id])
+  title        String @default("Untitled")
+  content      String @default("")
+  draftContent String @default("")
+  createdAt    DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
